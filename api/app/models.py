@@ -11,6 +11,9 @@ class Distillery(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "Distilleries"
+
 
 class Whisky(models.Model):
     name = models.CharField(max_length=50)
@@ -23,3 +26,6 @@ class Whisky(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "Whiskies"
