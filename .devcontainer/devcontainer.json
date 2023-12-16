@@ -3,10 +3,10 @@
   "service": "app",
   "waitFor": "onCreateCommand",
   "updateContentCommand": "",
-  "postCreateCommand": "ls -la",
-  // "postAttachCommand": {
-  //   "server": "python manage.py runserver"
-  // },
+  "postCreateCommand": "cd api && pip install --user -r requirements.txt && python manage.py migrate",
+  "postAttachCommand": {
+    "server": "python manage.py runserver"
+  },
   // "containerEnv": {
   //   "DATABASE_URL": "postgres://postgres:postgres@db/pillarpointstewards"
   // },
