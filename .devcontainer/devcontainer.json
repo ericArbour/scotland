@@ -9,14 +9,21 @@
     "server": "cd api && python manage.py runserver"
   },
   "customizations": {
-    "vscode": {
-      "extensions": ["ms-python.python"]
+    "customizations": {
+      "vscode": {
+        "extensions": ["ms-python.python", "ms-python.black-formatter"],
+        "settings": {
+          "editor.formatOnSave": true,
+          "python.formatting.provider": "black",
+          "python.formatting.blackArgs": ["--line-length", "88"],
+          "python.formatting.blackPath": "black"
+        }
+      }
     }
   },
   "portsAttributes": {
     "8000": {
-      "label": "Application",
-      "onAutoForward": "openPreview"
+      "label": "Application"
     }
   },
   "forwardPorts": [8000]
