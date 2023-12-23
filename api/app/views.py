@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import Distillery
+from .serializers import DistillerySerializer
 
-# Create your views here.
+
+class DistilleryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Distillery.objects.all()
+    serializer_class = DistillerySerializer

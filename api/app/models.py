@@ -1,10 +1,17 @@
 from django.db import models
 
+LAT_LON_MAX_DIGITS = 9
+LAT_LON_DECIMAL_PLACES = 6
+
 
 class Distillery(models.Model):
     name = models.CharField(max_length=25)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.DecimalField(
+        max_digits=LAT_LON_MAX_DIGITS, decimal_places=LAT_LON_DECIMAL_PLACES
+    )
+    longitude = models.DecimalField(
+        max_digits=LAT_LON_MAX_DIGITS, decimal_places=LAT_LON_DECIMAL_PLACES
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
