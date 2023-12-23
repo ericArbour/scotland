@@ -92,7 +92,7 @@ distilleries = [
 ]
 
 
-def add_distilleries(apps):
+def add_distilleries(apps, schema_editor):
     distillery_model = apps.get_model("app", "Distillery")
     for distillery in distilleries:
         d = distillery_model(**distillery)
