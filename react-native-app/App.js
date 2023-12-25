@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { useEffect } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import { useEffect, useState } from "react";
 
 export default function App() {
+  const [distilleries, setDistilleries] = useState(null);
   useEffect(() => {
     fetchData();
   }, []);
@@ -14,7 +15,7 @@ export default function App() {
         "https://zany-carnival-76jxqjrqjg2x945-8000.app.github.dev/api/distilleries/?format=json",
       );
       const json = await response.json();
-      console.log(json)
+      setDistilleries(json);
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -22,7 +23,10 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      {!distilleries ? <Text>loading...</Text> : <FlatList
+        data={distilleries}
+        renderItem={({ item }) => <Text>{item.name}</Text>}
+      />}
       <StatusBar style="auto" />
     </View>
   );

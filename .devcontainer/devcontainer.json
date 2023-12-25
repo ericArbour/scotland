@@ -23,7 +23,8 @@
   },
   "portsAttributes": {
     "8000": {
-      "label": "Application"
+      "label": "Application",
+      "visibility": "public"
     }
   },
   "forwardPorts": [8000]
