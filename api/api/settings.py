@@ -125,5 +125,5 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3030",
+    "https://zany-carnival-76jxqjrqjg2x945-19006.app.github.dev",
 ]

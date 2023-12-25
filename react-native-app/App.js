@@ -11,16 +11,10 @@ export default function App() {
     try {
       // Replace 'your-machine-ip' with your actual local IP address and adjust the endpoint
       const response = await fetch(
-        "http://127.0.0.1:8000/api/distilleries/?format=json", 
-        {
-          mode: "no-cors", // no-cors, *cors, same-origin
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          },
-        }
+        "https://zany-carnival-76jxqjrqjg2x945-8000.app.github.dev/api/distilleries/?format=json",
       );
-      console.log(response)
+      const json = await response.json();
+      console.log(json)
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
