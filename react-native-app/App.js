@@ -11,7 +11,6 @@ export default function App() {
 
   const fetchData = async () => {
     try {
-      // Replace 'your-machine-ip' with your actual local IP address and adjust the endpoint
       const response = await fetch(
         "https://zany-carnival-76jxqjrqjg2x945-8000.app.github.dev/api/distilleries/?format=json",
       );

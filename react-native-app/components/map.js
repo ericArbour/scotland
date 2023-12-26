@@ -1,8 +1,8 @@
 import React from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet } from 'react-native';
 
-export function Map() {
+export function Map({ distilleries }) {
   return (
     <MapView
       style={styles.map}
@@ -11,7 +11,18 @@ export function Map() {
         longitude: -4.289575,
         latitudeDelta: 6,
         longitudeDelta: 5,
-      }} />
+      }}>
+        {distilleries ? distilleries.map((distillery) => {
+           <Marker
+            key={distillery.id}
+            coordinate={{
+              latitude: distillery.latitude,
+              longitude: distillery.longitude,
+            }}
+            title={distillery.name}
+          />
+        }) : null}
+      </MapView>
   );
 }
 
