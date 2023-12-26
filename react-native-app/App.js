@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
+import { Map } from './components/map';
 
 export default function App() {
   const [distilleries, setDistilleries] = useState(null);
@@ -23,10 +24,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {!distilleries ? <Text>loading...</Text> : <FlatList
-        data={distilleries}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
-      />}
+      <Map distilleries={distilleries} />
       <StatusBar style="auto" />
     </View>
   );
