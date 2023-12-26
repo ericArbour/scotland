@@ -4,12 +4,14 @@ import { StyleSheet } from 'react-native';
 
 export function Map() {
   return (
-    <MapView style={styles.map} initialRegion={{
-      latitude: 37.78825,
-      longitude: -122.4324,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    }} />
+    <MapView
+      style={styles.map}
+      initialRegion={{
+        latitude: 57.050741,
+        longitude: -4.289575,
+        latitudeDelta: 6,
+        longitudeDelta: 5,
+      }} />
   );
 }
 
