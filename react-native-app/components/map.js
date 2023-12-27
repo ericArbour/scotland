@@ -1,6 +1,8 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
+import barrel from '../assets/barrel.png';
+import goldenRetriever from '../assets/golden-retriever.png';
 
 export function Map({ distilleries }) {
   return (
@@ -14,16 +16,34 @@ export function Map({ distilleries }) {
       }}
       mapType="satellite"
     >
+      <Marker
+        title="Golden Retriever Ancestral Home"
+        coordinate={{
+          latitude: 57.305787,
+          longitude: -4.815355,
+        }}
+        zIndex={10}
+      >
+        <Image
+          source={goldenRetriever}
+          style={styles.goldenRetrieverMarker}
+        />
+      </Marker>
       {distilleries ? distilleries.map((distillery) => {
-          return (
+        return (
           <Marker
             key={distillery.id}
+            title={distillery.name}
             coordinate={{
               latitude: distillery.latitude,
               longitude: distillery.longitude,
             }}
-            title={distillery.name}
-          />);
+          >
+            <Image
+              source={barrel}
+              style={styles.distilleryMarker}
+            />
+          </Marker>);
       }) : null}
     </MapView>
   );
@@ -37,4 +57,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  goldenRetrieverMarker: { width: 80, height: 80 },
+  distilleryMarker: { width: 40, height: 40 },
 });

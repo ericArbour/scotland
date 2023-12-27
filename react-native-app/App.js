@@ -12,7 +12,7 @@ export default function App() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://miniature-meme-7v9gwp66p9cp446-8000.app.github.dev/api/distilleries/?format=json",
+        "https://miniature-meme-7v9gwp66p9cp446-8000.preview.app.github.dev/api/distilleries/?format=json",
       );
       const json = await response.json();
       setDistilleries(json);
