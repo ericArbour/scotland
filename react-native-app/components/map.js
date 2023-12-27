@@ -11,18 +11,21 @@ export function Map({ distilleries }) {
         longitude: -4.289575,
         latitudeDelta: 6,
         longitudeDelta: 5,
-      }}>
-        {distilleries ? distilleries.map((distillery) => {
-           <Marker
+      }}
+      mapType="satellite"
+    >
+      {distilleries ? distilleries.map((distillery) => {
+          return (
+          <Marker
             key={distillery.id}
             coordinate={{
               latitude: distillery.latitude,
               longitude: distillery.longitude,
             }}
             title={distillery.name}
-          />
-        }) : null}
-      </MapView>
+          />);
+      }) : null}
+    </MapView>
   );
 }
 
