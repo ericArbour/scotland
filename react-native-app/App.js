@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { useEffect, useState } from "react";
 import { Map } from './components/map';
+import { Menu } from "./components/menu";
 
 export default function App() {
   const [distilleries, setDistilleries] = useState(null);
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Map distilleries={distilleries} />
+      <Menu distilleries={distilleries} onSelect={() => {}} />
       <StatusBar style="auto" />
     </View>
   );
