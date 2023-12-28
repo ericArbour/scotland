@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, FlatList } from "react-native";
 
-export function Map({ distilleries }) {
+export function MapComponent({ distilleries }) {
   if (!distilleries) {
     return <Text>loading...</Text>;
   }

@@ -8,14 +8,15 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import { Map } from './components/map';
+import { MapComponent } from './components/map-component';
 import { Menu } from "./components/menu";
 
 export default function App() {
   const [distilleries, setDistilleries] = useState(null);
-  const [isMenuVisible, setIsMenuVisible] = useState(true);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const mapRef = useRef(null);
+  const markerRefMapRef = useRef(new Map());
 
   useEffect(() => {
     fetchData();
@@ -44,20 +45,29 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View>
-        <Map distilleries={distilleries} mapRef={mapRef} />
+        <MapComponent
+          distilleries={distilleries}
+          mapRef={mapRef}
+          markerRefMapRef={markerRefMapRef}
+        />
         {isMenuVisible ? (
           <Menu
             distilleries={filteredDistilleries}
             onSelect={(distillery) => {
               setIsMenuVisible(false);
+
               const newRegion = {
                 latitude: distillery.latitude,
                 longitude: distillery.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
               };
-            
               mapRef.current?.animateToRegion(newRegion, 1000);
+
+              const selectedMarkerRef = markerRefMapRef.current.get(distillery.id);
+              if (selectedMarkerRef) {
+                selectedMarkerRef.showCallout();
+              }
             }}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}

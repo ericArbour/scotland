@@ -4,7 +4,7 @@ import { Image, StyleSheet } from 'react-native';
 import barrel from '../assets/barrel.png';
 import goldenRetriever from '../assets/golden-retriever.png';
 
-export function Map({ distilleries, mapRef }) {
+export function MapComponent({ distilleries, mapRef, markerRefMapRef }) {
   return (
     <MapView
       ref={mapRef}
@@ -33,6 +33,7 @@ export function Map({ distilleries, mapRef }) {
       {distilleries ? distilleries.map((distillery) => {
         return (
           <Marker
+            ref={ref => markerRefMapRef.current.set(distillery.id, ref)}
             key={distillery.id}
             title={distillery.name}
             coordinate={{
