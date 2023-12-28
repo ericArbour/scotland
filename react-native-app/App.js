@@ -1,14 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Pressable, View, Text, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { Map } from './components/map';
 import { Menu } from "./components/menu";
 
 export default function App() {
   const [distilleries, setDistilleries] = useState(null);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  const toggleMenu = () => {
+    setIsMenuVisible((isMenuVisible) => !isMenuVisible);
+  };
 
   const fetchData = async () => {
     try {
@@ -23,19 +29,26 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <Map distilleries={distilleries} />
-      <Menu distilleries={distilleries} onSelect={() => {}} />
+      {isMenuVisible ? <Menu distilleries={distilleries} onSelect={() => {}} /> : null}
+      <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
+        <Text style={styles.text}>☰</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  menuButton: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+    zIndex: 100,
   },
+  text: {
+    fontSize: 70,
+    color: 'rgba(255, 255, 255, 0.9)',
+  }
 });

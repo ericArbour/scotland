@@ -23,7 +23,7 @@ export function Menu({ distilleries, onSelect }) {
 const styles = StyleSheet.create({
   menu: {
     position: 'absolute',
-    top: 20,
+    bottom: 100,
     left: 20,
     right: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
