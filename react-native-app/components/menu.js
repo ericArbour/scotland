@@ -8,7 +8,12 @@ import {
   Keyboard,
 } from "react-native";
 
-export function Menu({ distilleries, onSelect, searchTerm, setSearchTerm }) {
+export function Menu({
+  distilleries,
+  onSelect,
+  searchTerm,
+  setSearchTerm,
+}) {
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   useEffect(() => {

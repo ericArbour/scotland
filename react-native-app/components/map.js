@@ -4,9 +4,10 @@ import { Image, StyleSheet } from 'react-native';
 import barrel from '../assets/barrel.png';
 import goldenRetriever from '../assets/golden-retriever.png';
 
-export function Map({ distilleries }) {
+export function Map({ distilleries, mapRef }) {
   return (
     <MapView
+      ref={mapRef}
       style={styles.map}
       initialRegion={{
         latitude: 57.050741,

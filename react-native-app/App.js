@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -7,7 +8,6 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import { useEffect, useState } from "react";
 import { Map } from './components/map';
 import { Menu } from "./components/menu";
 
@@ -15,6 +15,7 @@ export default function App() {
   const [distilleries, setDistilleries] = useState(null);
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const mapRef = useRef(null);
 
   useEffect(() => {
     fetchData();
@@ -43,11 +44,21 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View>
-        <Map distilleries={distilleries} />
+        <Map distilleries={distilleries} mapRef={mapRef} />
         {isMenuVisible ? (
           <Menu
             distilleries={filteredDistilleries}
-            onSelect={() => { }}
+            onSelect={(distillery) => {
+              setIsMenuVisible(false);
+              const newRegion = {
+                latitude: distillery.latitude,
+                longitude: distillery.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              };
+            
+              mapRef.current?.animateToRegion(newRegion, 1000);
+            }}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
           />
