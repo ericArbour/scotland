@@ -1,12 +1,20 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Pressable, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  Text,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { Map } from './components/map';
 import { Menu } from "./components/menu";
 
 export default function App() {
   const [distilleries, setDistilleries] = useState(null);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchData();
@@ -28,15 +36,28 @@ export default function App() {
     }
   };
 
+  const filteredDistilleries = distilleries?.filter(distillery =>
+    distillery.name.toLowerCase().includes(searchTerm.toLowerCase())
+  ) ?? [];
+
   return (
-    <View>
-      <Map distilleries={distilleries} />
-      {isMenuVisible ? <Menu distilleries={distilleries} onSelect={() => {}} /> : null}
-      <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
-        <Text style={styles.text}>☰</Text>
-      </TouchableOpacity>
-      <StatusBar style="auto" />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View>
+        <Map distilleries={distilleries} />
+        {isMenuVisible ? (
+          <Menu
+            distilleries={filteredDistilleries}
+            onSelect={() => { }}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
+        ) : null}
+        <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
+          <Text style={styles.text}>☰</Text>
+        </TouchableOpacity>
+        <StatusBar style="auto" />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
