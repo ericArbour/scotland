@@ -4,25 +4,29 @@ import { Image, StyleSheet } from 'react-native';
 import barrel from '../assets/barrel.png';
 import goldenRetriever from '../assets/golden-retriever.png';
 
-export function MapComponent({ distilleries, mapRef, markerRefMapRef }) {
+const scotlandInitialRegion = {
+  latitude: 57.050741,
+  longitude: -4.289575,
+  latitudeDelta: 6,
+  longitudeDelta: 5,
+}
+
+const goldenRetrieverCoordinate = {
+  latitude: 57.305787,
+  longitude: -4.815355,
+}
+
+export function MapComponent({ distilleries, mapRef, mapMarkerMapRef }) {
   return (
     <MapView
       ref={mapRef}
       style={styles.map}
-      initialRegion={{
-        latitude: 57.050741,
-        longitude: -4.289575,
-        latitudeDelta: 6,
-        longitudeDelta: 5,
-      }}
+      initialRegion={scotlandInitialRegion}
       mapType="satellite"
     >
       <Marker
         title="Golden Retriever Ancestral Home"
-        coordinate={{
-          latitude: 57.305787,
-          longitude: -4.815355,
-        }}
+        coordinate={goldenRetrieverCoordinate}
         zIndex={10}
       >
         <Image
@@ -33,7 +37,7 @@ export function MapComponent({ distilleries, mapRef, markerRefMapRef }) {
       {distilleries ? distilleries.map((distillery) => {
         return (
           <Marker
-            ref={ref => markerRefMapRef.current.set(distillery.id, ref)}
+            ref={ref => mapMarkerMapRef.current.set(distillery.id, ref)}
             key={distillery.id}
             title={distillery.name}
             coordinate={{

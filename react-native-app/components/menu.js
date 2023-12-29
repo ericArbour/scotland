@@ -10,9 +10,9 @@ import {
 
 export function Menu({
   distilleries,
-  onSelect,
-  searchTerm,
-  setSearchTerm,
+  onDistillerySelect,
+  distillerySearchTerm,
+  setDistillerySearchTerm,
 }) {
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
@@ -37,8 +37,8 @@ export function Menu({
       <TextInput
         style={styles.searchBox}
         placeholder="Search distilleries"
-        value={searchTerm}
-        onChangeText={setSearchTerm}
+        value={distillerySearchTerm}
+        onChangeText={setDistillerySearchTerm}
       />
       {!distilleries.length ? (
         <Text style={styles.fallback}>No distilleries</Text>
@@ -46,7 +46,7 @@ export function Menu({
         <TouchableOpacity
           key={distillery.id}
           style={styles.menuItem}
-          onPress={() => onSelect(distillery)}
+          onPress={() => onDistillerySelect(distillery)}
         >
           <Text>{distillery.name}</Text>
         </TouchableOpacity>

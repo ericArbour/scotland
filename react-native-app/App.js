@@ -14,9 +14,9 @@ import { Menu } from "./components/menu";
 export default function App() {
   const [distilleries, setDistilleries] = useState(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [distillerySearchTerm, setDistillerySearchTerm] = useState('');
   const mapRef = useRef(null);
-  const markerRefMapRef = useRef(new Map());
+  const mapMarkerMapRef = useRef(new Map());
 
   useEffect(() => {
     fetchData();
@@ -39,8 +39,25 @@ export default function App() {
   };
 
   const filteredDistilleries = distilleries?.filter(distillery =>
-    distillery.name.toLowerCase().includes(searchTerm.toLowerCase())
+    distillery.name.toLowerCase().includes(distillerySearchTerm.toLowerCase())
   ) ?? [];
+
+  const handleDistillerySelect = (distillery) => {
+    setIsMenuVisible(false);
+
+    const newRegion = {
+      latitude: distillery.latitude,
+      longitude: distillery.longitude,
+      latitudeDelta: 0.05,
+      longitudeDelta: 0.05,
+    };
+    mapRef.current?.animateToRegion(newRegion, 1000);
+
+    const selectedMarkerRef = mapMarkerMapRef.current.get(distillery.id);
+    if (selectedMarkerRef) {
+      selectedMarkerRef.showCallout();
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -48,29 +65,14 @@ export default function App() {
         <MapComponent
           distilleries={distilleries}
           mapRef={mapRef}
-          markerRefMapRef={markerRefMapRef}
+          mapMarkerMapRef={mapMarkerMapRef}
         />
         {isMenuVisible ? (
           <Menu
             distilleries={filteredDistilleries}
-            onSelect={(distillery) => {
-              setIsMenuVisible(false);
-
-              const newRegion = {
-                latitude: distillery.latitude,
-                longitude: distillery.longitude,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
-              };
-              mapRef.current?.animateToRegion(newRegion, 1000);
-
-              const selectedMarkerRef = markerRefMapRef.current.get(distillery.id);
-              if (selectedMarkerRef) {
-                selectedMarkerRef.showCallout();
-              }
-            }}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+            onDistillerySelect={handleDistillerySelect}
+            distillerySearchTerm={distillerySearchTerm}
+            setDistillerySearchTerm={setDistillerySearchTerm}
           />
         ) : null}
         <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
