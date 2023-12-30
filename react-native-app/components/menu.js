@@ -7,16 +7,18 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm } from '../store/distilleries-slice';
 
-export function Menu({
-  distilleries,
-  onDistillerySelect,
-  distillerySearchTerm,
-}) {
+export function Menu({ onDistillerySelect }) {
   const dispatch = useDispatch();
+  const distilleries = useSelector(state => state.distilleries.items);
+  const distillerySearchTerm = useSelector(state => state.distilleries.searchTerm);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  const filteredDistilleries = distilleries?.filter((distillery) =>
+    distillery.name.toLowerCase().includes(distillerySearchTerm.toLowerCase())
+  ) ?? [];
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardWillShow", (e) => {
@@ -42,9 +44,9 @@ export function Menu({
         value={distillerySearchTerm}
         onChangeText={(text) => dispatch(setSearchTerm(text))}
       />
-      {!distilleries.length ? (
+      {!filteredDistilleries.length ? (
         <Text style={styles.fallback}>No distilleries</Text>
-      ) : distilleries.map((distillery) => (
+      ) : filteredDistilleries.map((distillery) => (
         <TouchableOpacity
           key={distillery.id}
           style={styles.menuItem}

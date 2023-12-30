@@ -17,8 +17,6 @@ import { store } from './store/store';
 function App() {
   const dispatch = useDispatch();
   const distilleriesStatus = useSelector(state => state.distilleries.status);
-  const distilleries = useSelector(state => state.distilleries.items);
-  const distillerySearchTerm = useSelector(state => state.distilleries.searchTerm);
   const isMenuVisible = useSelector(state => state.distilleries.isMenuVisible);
   const mapRef = useRef(null);
   const mapMarkerMapRef = useRef(new Map());
@@ -28,10 +26,6 @@ function App() {
       dispatch(fetchDistilleries())
     }
   }, [distilleriesStatus, dispatch])
-
-  const filteredDistilleries = distilleries?.filter(distillery =>
-    distillery.name.toLowerCase().includes(distillerySearchTerm.toLowerCase())
-  ) ?? [];
 
   const handleDistillerySelect = (distillery) => {
     dispatch(toggleMenu());
@@ -53,17 +47,9 @@ function App() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View>
-        <MapComponent
-          distilleries={distilleries}
-          mapRef={mapRef}
-          mapMarkerMapRef={mapMarkerMapRef}
-        />
+        <MapComponent mapRef={mapRef} mapMarkerMapRef={mapMarkerMapRef} />
         {isMenuVisible ? (
-          <Menu
-            distilleries={filteredDistilleries}
-            onDistillerySelect={handleDistillerySelect}
-            distillerySearchTerm={distillerySearchTerm}
-          />
+          <Menu onDistillerySelect={handleDistillerySelect} />
         ) : null}
         <TouchableOpacity style={styles.menuButton} onPress={() => dispatch(toggleMenu())}>
           <Text style={styles.text}>☰</Text>

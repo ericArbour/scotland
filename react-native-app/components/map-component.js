@@ -1,6 +1,7 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
 import { Image, StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import { useSelector } from 'react-redux';
 import barrel from '../assets/barrel.png';
 import goldenRetriever from '../assets/golden-retriever.png';
 
@@ -16,7 +17,9 @@ const goldenRetrieverCoordinate = {
   longitude: -4.815355,
 }
 
-export function MapComponent({ distilleries, mapRef, mapMarkerMapRef }) {
+export function MapComponent({ mapRef, mapMarkerMapRef }) {
+  const distilleries = useSelector(state => state.distilleries.items);
+
   return (
     <MapView
       ref={mapRef}
