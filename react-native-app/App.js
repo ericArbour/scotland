@@ -1,49 +1,40 @@
-import { useEffect, useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useRef } from "react";
 import {
+  Keyboard,
   StyleSheet,
-  TouchableWithoutFeedback,
-  View,
   Text,
   TouchableOpacity,
-  Keyboard,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { MapComponent } from './components/map-component';
 import { Menu } from "./components/menu";
+import { fetchDistilleries, toggleMenu } from "./store/distilleries-slice";
+import { store } from './store/store';
 
-export default function App() {
-  const [distilleries, setDistilleries] = useState(null);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [distillerySearchTerm, setDistillerySearchTerm] = useState('');
+function App() {
+  const dispatch = useDispatch();
+  const distilleriesStatus = useSelector(state => state.distilleries.status);
+  const distilleries = useSelector(state => state.distilleries.items);
+  const distillerySearchTerm = useSelector(state => state.distilleries.searchTerm);
+  const isMenuVisible = useSelector(state => state.distilleries.isMenuVisible);
   const mapRef = useRef(null);
   const mapMarkerMapRef = useRef(new Map());
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const toggleMenu = () => {
-    setIsMenuVisible((isMenuVisible) => !isMenuVisible);
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://miniature-meme-7v9gwp66p9cp446-8000.preview.app.github.dev/api/distilleries/?format=json",
-      );
-      const json = await response.json();
-      setDistilleries(json);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
+    if (distilleriesStatus === 'idle') {
+      dispatch(fetchDistilleries())
     }
-  };
+  }, [distilleriesStatus, dispatch])
 
   const filteredDistilleries = distilleries?.filter(distillery =>
     distillery.name.toLowerCase().includes(distillerySearchTerm.toLowerCase())
   ) ?? [];
 
   const handleDistillerySelect = (distillery) => {
-    setIsMenuVisible(false);
+    dispatch(toggleMenu());
 
     const newRegion = {
       latitude: distillery.latitude,
@@ -72,10 +63,9 @@ export default function App() {
             distilleries={filteredDistilleries}
             onDistillerySelect={handleDistillerySelect}
             distillerySearchTerm={distillerySearchTerm}
-            setDistillerySearchTerm={setDistillerySearchTerm}
           />
         ) : null}
-        <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
+        <TouchableOpacity style={styles.menuButton} onPress={() => dispatch(toggleMenu())}>
           <Text style={styles.text}>☰</Text>
         </TouchableOpacity>
         <StatusBar style="auto" />
@@ -96,3 +86,11 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.9)',
   }
 });
+
+export default function Root() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}

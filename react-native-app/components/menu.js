@@ -1,19 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
+  Keyboard,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  Keyboard,
 } from "react-native";
+import { useDispatch } from 'react-redux';
+import { setSearchTerm } from '../store/distilleries-slice';
 
 export function Menu({
   distilleries,
   onDistillerySelect,
   distillerySearchTerm,
-  setDistillerySearchTerm,
 }) {
+  const dispatch = useDispatch();
   const [keyboardOffset, setKeyboardOffset] = useState(0);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export function Menu({
         style={styles.searchBox}
         placeholder="Search distilleries"
         value={distillerySearchTerm}
-        onChangeText={setDistillerySearchTerm}
+        onChangeText={(text) => dispatch(setSearchTerm(text))}
       />
       {!distilleries.length ? (
         <Text style={styles.fallback}>No distilleries</Text>
